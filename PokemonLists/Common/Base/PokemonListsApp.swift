@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct PokemonListsApp: App {
-    let persistenceController = PersistenceController.shared
-
     var body: some Scene {
         WindowGroup {
             PokemonListsView()

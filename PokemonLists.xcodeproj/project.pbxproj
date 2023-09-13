@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		ECE973492AB2099A00E4F036 /* PokemonListsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE973482AB2099A00E4F036 /* PokemonListsApp.swift */; };
-		ECE9734B2AB2099A00E4F036 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE9734A2AB2099A00E4F036 /* Persistence.swift */; };
-		ECE9734E2AB2099A00E4F036 /* PokemonLists.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ECE9734C2AB2099A00E4F036 /* PokemonLists.xcdatamodeld */; };
 		ECE973522AB2099C00E4F036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE973512AB2099C00E4F036 /* Assets.xcassets */; };
 		ECE973562AB2099C00E4F036 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE973552AB2099C00E4F036 /* Preview Assets.xcassets */; };
 		ECE9737F2AB209DA00E4F036 /* PokemonListsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE9737E2AB209DA00E4F036 /* PokemonListsViewModelTests.swift */; };
@@ -36,8 +34,6 @@
 /* Begin PBXFileReference section */
 		ECE973452AB2099A00E4F036 /* PokemonLists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonLists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECE973482AB2099A00E4F036 /* PokemonListsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListsApp.swift; sourceTree = "<group>"; };
-		ECE9734A2AB2099A00E4F036 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		ECE9734D2AB2099A00E4F036 /* PokemonLists.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokemonLists.xcdatamodel; sourceTree = "<group>"; };
 		ECE973512AB2099C00E4F036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ECE973532AB2099C00E4F036 /* PokemonLists.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PokemonLists.entitlements; sourceTree = "<group>"; };
 		ECE973552AB2099C00E4F036 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -226,15 +222,6 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
-		ECE973A42AB20F1E00E4F036 /* LocalDatabase */ = {
-			isa = PBXGroup;
-			children = (
-				ECE9734A2AB2099A00E4F036 /* Persistence.swift */,
-				ECE9734C2AB2099A00E4F036 /* PokemonLists.xcdatamodeld */,
-			);
-			path = LocalDatabase;
-			sourceTree = "<group>";
-		};
 		ECE973A52AB20F3400E4F036 /* Entitlements */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,7 +243,6 @@
 			children = (
 				ECE973A52AB20F3400E4F036 /* Entitlements */,
 				ECE973A32AB20F1400E4F036 /* Base */,
-				ECE973A42AB20F1E00E4F036 /* LocalDatabase */,
 				ECE973A62AB20F3C00E4F036 /* Resources */,
 			);
 			path = Common;
@@ -366,11 +352,9 @@
 				ECE973932AB20CD300E4F036 /* PokemonDetailView.swift in Sources */,
 				ECE9739A2AB20D9600E4F036 /* MyPokemonViewModel.swift in Sources */,
 				ECE973972AB20CFD00E4F036 /* MyPokemonView.swift in Sources */,
-				ECE9734E2AB2099A00E4F036 /* PokemonLists.xcdatamodeld in Sources */,
 				ECE973892AB20A6900E4F036 /* PokemonListsView.swift in Sources */,
 				ECE973902AB20CB900E4F036 /* PokemonDetailViewModel.swift in Sources */,
 				ECE9738C2AB20A7D00E4F036 /* PokemonListsViewModel.swift in Sources */,
-				ECE9734B2AB2099A00E4F036 /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -652,19 +636,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		ECE9734C2AB2099A00E4F036 /* PokemonLists.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				ECE9734D2AB2099A00E4F036 /* PokemonLists.xcdatamodel */,
-			);
-			currentVersion = ECE9734D2AB2099A00E4F036 /* PokemonLists.xcdatamodel */;
-			path = PokemonLists.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = ECE9733D2AB2099A00E4F036 /* Project object */;
 }
