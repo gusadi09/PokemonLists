@@ -180,7 +180,7 @@ public extension PKTypeData {
 
 public struct PKPokemonDetail: Codable {
     public let name: String?
-    public let sprites: [PKSprite]?
+    public let sprites: PKSprite?
     public let types: [PKType]?
     public let moves: [PKMove]?
     public let weight: UInt?
@@ -188,7 +188,7 @@ public struct PKPokemonDetail: Codable {
     
     public init(
         name: String?,
-        sprites: [PKSprite]?,
+        sprites: PKSprite?,
         types: [PKType]?,
         moves: [PKMove]?,
         weight: UInt?,
@@ -207,7 +207,7 @@ public extension PKPokemonDetail {
     static var sample: PKPokemonDetail {
         PKPokemonDetail(
             name: "test",
-            sprites: [PKSprite.sample],
+            sprites: PKSprite.sample,
             types: [PKType.sample],
             moves: [PKMove.sample],
             weight: 10,

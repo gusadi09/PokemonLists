@@ -94,7 +94,9 @@ extension PokemonListsView {
                 if viewModel.firstItem() == nil {
                     EmptyView()
                 } else {
-                    Text((viewModel.firstItem()?.name).orEmpty())
+                    PokemonDetailView(
+                        id: viewModel.getIdForFirstItem()
+                    )
                 }
             }
             

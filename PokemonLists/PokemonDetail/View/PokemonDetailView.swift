@@ -8,13 +8,40 @@
 import SwiftUI
 
 struct PokemonDetailView: View {
+    
+    let id: UInt
+    
+    @ObservedObject var viewModel = PokemonDetailViewModel()
+    
+    init(id: UInt) {
+        self.id = id
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            if viewModel.phase == .loading {
+                Spacer()
+                
+                ProgressView()
+                    .progressViewStyle(.circular)
+                
+                Spacer()
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    Text((viewModel.phase.resultValue?.name).orEmpty())
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                await viewModel.getPokemonDetail(for: id)
+            }
+        }
     }
 }
 
 struct PokemonDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetailView()
+        PokemonDetailView(id: 1)
     }
 }

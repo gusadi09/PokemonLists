@@ -71,4 +71,15 @@ final class PokemonListsViewModel: ObservableObject {
                 .first
         ).orZero()
     }
+    
+    func getIdForFirstItem() -> UInt {
+        return (
+            (firstItem()?.url)?
+                .split(separator: "/")
+                .compactMap({ item in
+                    UInt(item)
+                })
+                .first
+        ).orZero()
+    }
 }
