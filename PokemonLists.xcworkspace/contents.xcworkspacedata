@@ -11,6 +11,9 @@
       location = "container:PokemonLists.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:PokemonDataSource.xctestplan">
+      location = "group:PokemonDataSource/Tests/PokemonDataSourceTests.xctestplan">
+   </FileRef>
+   <FileRef
+      location = "group:PokemonExtensions/Tests/PokemonExtensions.xctestplan">
    </FileRef>
 </Workspace>
