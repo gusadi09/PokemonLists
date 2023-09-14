@@ -9,13 +9,13 @@ import Foundation
 import Moya
 import PokemonExtensions
 
-protocol PokemonTargetType: TargetType {
+protocol PokemonAppTargetType: TargetType {
     var parameters: [String: Any] {
         get
     }
 }
 
-extension PokemonTargetType {
+extension PokemonAppTargetType {
 
     public var baseURL: URL {
         return "https://pokeapi.co/api/v2".toURL() ?? (NSURL() as URL)
