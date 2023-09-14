@@ -18,7 +18,7 @@ protocol PokemonTargetType: TargetType {
 extension PokemonTargetType {
 
     public var baseURL: URL {
-        return "https://pokeapi.co/api/v2/".toURL() ?? (NSURL() as URL)
+        return "https://pokeapi.co/api/v2".toURL() ?? (NSURL() as URL)
     }
 
     var parameterEncoding: Moya.ParameterEncoding {
