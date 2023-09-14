@@ -15,6 +15,7 @@ struct PokemonDetailView: View {
     @StateObject var viewModel = PokemonDetailViewModel()
     
     @Environment(\.colorScheme) var scheme
+    @Environment(\.dismiss) var dismiss
     
     init(id: Binding<UInt?>) {
         self._id = id
@@ -183,7 +184,7 @@ struct PokemonDetailView: View {
             }
             
             Button {
-                
+                viewModel.tryToCatch()
             } label: {
                 HStack {
                     Spacer()
@@ -194,11 +195,12 @@ struct PokemonDetailView: View {
                     
                     Spacer()
                 }
+                .disabled(viewModel.phase == .loading)
                 .padding(.horizontal)
                 .frame(height: 45)
                 .background(
                     Capsule()
-                        .foregroundColor(.blue)
+                        .foregroundColor(.blue.opacity(viewModel.phase == .loading ? 0.7 : 1))
                 )
                 .padding(.vertical, 10)
                 .padding(.horizontal)
@@ -214,7 +216,34 @@ struct PokemonDetailView: View {
                         y: 0
                     )
             )
-
+            .alert(isPresented: $viewModel.isSuccessToSave, content: {
+                Alert(
+                    title: Text(LocalizableText.detailSuccessSave),
+                    message: Text(LocalizableText.detailSuccessSubtitle),
+                    dismissButton: .default(Text("OK"), action: { dismiss() })
+                )
+            })
+            .alert(isPresented: $viewModel.isRanAway) {
+                Alert(
+                    title: Text(LocalizableText.detailRanAway),
+                    message: Text(LocalizableText.detailPokemonFailCaught),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .alert(LocalizableText.detailCaught, isPresented: $viewModel.showSavePrompt
+            ) {
+                TextField(LocalizableText.detailCaughtPlaceholder, text: $viewModel.nickname)
+                Button("OK", action: {
+                    viewModel.catchPokemon(
+                        id: id.orZero(),
+                        name: viewModel.nickname.isEmpty ? (viewModel.phase.resultValue?.name).orEmpty() : viewModel.nickname,
+                        root: (viewModel.phase.resultValue?.name).orEmpty()
+                    )
+                })
+            } message: {
+                Text(LocalizableText.detailCaughtSubtitle)
+            }
+            
         }
         .onAppear(perform: {
             Task {

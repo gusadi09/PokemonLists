@@ -14,3 +14,10 @@
 "detail_moves" = "Moves";
 "detail_weight" = "Weight: ";
 "detail_height" = "Height: ";
+"detail_pokomon_fail" = "Pokemon was ran away";
+"detail_ran_away" = "Ran Away!!";
+"detail_caught" = "Already Caught";
+"detail_caught_subtitle" = "You've been caught the pokemon, please enter the nickname";
+"detail_caught_placeholder" = "Enter nickname";
+"detail_success_save" = "Success";
+"detail_success_subtitle" = "Success to save your pokemon profile, please check at My Pokemon menu";

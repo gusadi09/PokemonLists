@@ -16,6 +16,12 @@ final class PokemonDetailViewModel: ObservableObject {
     
     @Published var showMoreMoves = false
     
+    @Published var isRanAway = false
+    @Published var showSavePrompt = false
+    @Published var nickname = ""
+    
+    @Published var isSuccessToSave = false
+    
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
         self.pokemonRepository = pokemonRepository
     }
@@ -52,5 +58,35 @@ final class PokemonDetailViewModel: ObservableObject {
         guard let array = phase.resultValue?.moves else { return [] }
         
         return showMoreMoves ? array : Array(array.prefix(9))
+    }
+    
+    func tryToCatch() {
+        isRanAway = false
+        showSavePrompt = false
+        
+        let randomValue = arc4random_uniform(2)
+        
+        if randomValue == 0 {
+            isRanAway = false
+            showSavePrompt = true
+            print("Caught")
+        } else {
+            isRanAway = true
+            showSavePrompt = false
+            print("Fail")
+        }
+    }
+    
+    @MainActor
+    func catchPokemon(id: UInt, name: String, root: String) {
+        isRanAway = false
+        
+        do {
+            try pokemonRepository.provideCatchPokemon(with: id, nickname: name, root: root)
+            
+            isSuccessToSave = true
+        } catch {
+            isRanAway = true
+        }
     }
 }

@@ -14,3 +14,10 @@
 "detail_moves" = "Pergerakan";
 "detail_weight" = "Berat: ";
 "detail_height" = "Tinggi: ";
+"detail_pokomon_fail" = "Pokemon telah kabur";
+"detail_ran_away" = "Telah Kabur!!";
+"detail_caught" = "Sudah Ditangkap";
+"detail_caught_subtitle" = "Kamu telah menangkap pokemon, mohon masukan nama pendek";
+"detail_caught_placeholder" = "Masukan nama pendek";
+"detail_success_save" = "Berhasi;";
+"detail_success_subtitle" = "Berhasil menyimpan profil pokemon kamu, silahkan cek pada menu Pokemon Saya";
