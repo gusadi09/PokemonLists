@@ -21,6 +21,8 @@ final class PokemonListsViewModel: ObservableObject {
     
     @Published var isPrevAvailable = false
     
+    @Published var selected: UInt? = 1
+    
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
         self.pokemonRepository = pokemonRepository
     }

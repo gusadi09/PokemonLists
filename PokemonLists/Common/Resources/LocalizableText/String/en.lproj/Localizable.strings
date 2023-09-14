@@ -7,3 +7,10 @@
 */
 
 "list_pokemon_title" = "Pokemon";
+
+"detail_catch" = "Catch";
+"detail_show_less" = "Show Less";
+"detail_show_more" = "Show More";
+"detail_moves" = "Moves";
+"detail_weight" = "Weight: ";
+"detail_height" = "Height: ";

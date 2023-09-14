@@ -5,18 +5,19 @@
 //  Created by Gus Adi on 13/09/23.
 //
 
+import PokemonExtensions
 import SwiftUI
 
 struct PokemonDetailView: View {
     
-    let id: UInt
+    @Binding var id: UInt?
     
-    @ObservedObject var viewModel = PokemonDetailViewModel()
+    @StateObject var viewModel = PokemonDetailViewModel()
     
     @Environment(\.colorScheme) var scheme
     
-    init(id: UInt) {
-        self.id = id
+    init(id: Binding<UInt?>) {
+        self._id = id
     }
     
     var body: some View {
@@ -32,6 +33,30 @@ struct PokemonDetailView: View {
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVStack(alignment: .leading, spacing: 12) {
+                            
+                            HStack {
+                                Spacer()
+                                
+                                AsyncImage(
+                                    url: viewModel.picture()
+                                ) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(maxWidth: 300)
+                                        .background(
+                                            Color.white
+                                        )
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                } placeholder: {
+                                    ProgressView()
+                                        .progressViewStyle(.circular)
+                                }
+                                
+                                Spacer()
+                            }
+                            .padding(.top)
+
                             HStack {
                                 Spacer()
                                 
@@ -39,6 +64,7 @@ struct PokemonDetailView: View {
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
+                                    .id(1)
                                 
                                 Spacer()
                             }
@@ -74,12 +100,12 @@ struct PokemonDetailView: View {
                                 .padding(.bottom, 5)
                                 
                                 HStack(spacing: 15) {
-                                    Text("Weight: ")
+                                    Text(LocalizableText.detailWeight)
                                         .fontWeight(.semibold)
                                     +
                                     Text("\((viewModel.phase.resultValue?.weight).orZero())")
                                     
-                                    Text("Height: ")
+                                    Text(LocalizableText.detailHeight)
                                         .fontWeight(.semibold)
                                     +
                                     Text("\((viewModel.phase.resultValue?.height).orZero())")
@@ -91,10 +117,9 @@ struct PokemonDetailView: View {
                             Capsule()
                                 .frame(height: 1)
                                 .padding(.horizontal)
-                                .id(1)
                             
                             LazyVStack(alignment: .leading, spacing: 8) {
-                                Text("Moves")
+                                Text(LocalizableText.detailMoves)
                                     .fontWeight(.bold)
                                     .font(.title3)
                                     .padding(.horizontal)
@@ -139,7 +164,7 @@ struct PokemonDetailView: View {
                                         HStack {
                                             Spacer()
                                             
-                                            Text(viewModel.showMoreMoves ? "Show Less" : "Show More")
+                                            Text(viewModel.showText())
                                                 .font(.callout)
                                                 .fontWeight(.semibold)
                                             
@@ -163,7 +188,7 @@ struct PokemonDetailView: View {
                 HStack {
                     Spacer()
                     
-                    Text("Catch")
+                    Text(LocalizableText.detailCatch)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                     
@@ -191,11 +216,16 @@ struct PokemonDetailView: View {
             )
 
         }
-        .onAppear {
+        .onAppear(perform: {
             Task {
-                await viewModel.getPokemonDetail(for: id)
+                await viewModel.getPokemonDetail(for: id.orZero())
             }
-        }
+        })
+        .onChange(of: id, perform: { newValue in
+            Task {
+                await viewModel.getPokemonDetail(for: newValue.orZero())
+            }
+        })
         .background(scheme == .dark ? Color.black : Color.white)
         .buttonStyle(.plain)
     }
@@ -203,6 +233,6 @@ struct PokemonDetailView: View {
 
 struct PokemonDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetailView(id: 1)
+        PokemonDetailView(id: .constant(1))
     }
 }

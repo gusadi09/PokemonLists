@@ -113,20 +113,20 @@ public extension PKSprite {
 }
 
 public struct PKOtherSprite: Codable {
-    public let dreamWorld: PKDreamWorldSprite?
+    public let officialArtwork: PKOfficialArtworkSprite?
     
-    public init(dreamWorld: PKDreamWorldSprite?) {
-        self.dreamWorld = dreamWorld
+    public init(officialArtwork: PKOfficialArtworkSprite?) {
+        self.officialArtwork = officialArtwork
     }
     
     enum CodingKeys: String, CodingKey {
-        case dreamWorld = "dream_world"
+        case officialArtwork = "official-artwork"
     }
 }
 
 public extension PKOtherSprite {
     static var sample: PKOtherSprite {
-        PKOtherSprite(dreamWorld: PKDreamWorldSprite.sample)
+        PKOtherSprite(officialArtwork: PKOfficialArtworkSprite.sample)
     }
     
     static var sampleData: Data {
@@ -134,7 +134,7 @@ public extension PKOtherSprite {
     }
 }
 
-public struct PKDreamWorldSprite: Codable {
+public struct PKOfficialArtworkSprite: Codable {
     public let frontDefault: String?
     
     public init(frontDefault: String?) {
@@ -146,9 +146,9 @@ public struct PKDreamWorldSprite: Codable {
     }
 }
 
-public extension PKDreamWorldSprite {
-    static var sample: PKDreamWorldSprite {
-        PKDreamWorldSprite(frontDefault: "sprite")
+public extension PKOfficialArtworkSprite {
+    static var sample: PKOfficialArtworkSprite {
+        PKOfficialArtworkSprite(frontDefault: "sprite")
     }
     
     static var sampleData: Data {

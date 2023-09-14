@@ -38,7 +38,16 @@ final class PokemonDetailViewModel: ObservableObject {
         self.showMoreMoves.toggle()
     }
     
-    @MainActor
+    func showText() -> String {
+        showMoreMoves ? LocalizableText.detailShowLess : LocalizableText.detailShowMore
+    }
+    
+    func picture() -> URL? {
+        (
+            self.phase.resultValue?.sprites?.other?.officialArtwork?.frontDefault
+        ).orEmpty().toURL()
+    }
+    
     func movesArray() -> [PKMove] {
         guard let array = phase.resultValue?.moves else { return [] }
         

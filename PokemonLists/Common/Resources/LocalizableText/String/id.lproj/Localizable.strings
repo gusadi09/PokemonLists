@@ -7,3 +7,10 @@
 */
 
 "list_pokemon_title" = "Pokemon";
+
+"detail_catch" = "Tangkap";
+"detail_show_less" = "Tampilkan Sedikit";
+"detail_show_more" = "Tampilkan Semua";
+"detail_moves" = "Pergerakan";
+"detail_weight" = "Berat: ";
+"detail_height" = "Tinggi: ";
