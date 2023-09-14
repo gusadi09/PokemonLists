@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Gus Adi on 14/09/23.
+  
+*/
+
+"general_internal_server_error" = "Mohon maaf, saat ini sedang terjadi masalah pada server kami. Mohon coba beberapa saat lagi";
