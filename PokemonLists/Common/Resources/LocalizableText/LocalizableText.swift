@@ -12,6 +12,10 @@ enum LocalizableText {
         "list_pokemon_title",
         comment: "pokemon"
     )
+    static let listWildPokemon = NSLocalizedString(
+        "list_wild_pokemon",
+        comment: "wild pokemon"
+    )
     
     static let detailCatch = NSLocalizedString(
         "detail_catch",
@@ -72,6 +76,10 @@ enum LocalizableText {
     static let detailRename = NSLocalizedString(
         "detail_rename",
         comment: "rename"
+    )
+    static let detailRenameSubtitle = NSLocalizedString(
+        "detail_rename_subtitle",
+        comment: "rename subtitle"
     )
     
     static let myPokemonTitle = NSLocalizedString(

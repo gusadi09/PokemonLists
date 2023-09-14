@@ -20,6 +20,12 @@ final class PokemonDetailViewModel: ObservableObject {
     @Published var showSavePrompt = false
     @Published var nickname = ""
     
+    @Published var localName = ""
+    
+    @Published var rename = ""
+    
+    @Published var isShowRename = false
+    
     @Published var isSuccessToSave = false
     
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
@@ -85,8 +91,29 @@ final class PokemonDetailViewModel: ObservableObject {
             try pokemonRepository.provideCatchPokemon(with: id, nickname: name, root: root)
             
             isSuccessToSave = true
+            nickname = ""
         } catch {
             isRanAway = true
+        }
+    }
+    
+    func getSpesific(uid: UUID) {
+        do {
+            let data = try pokemonRepository.provideGetSpesificPokemon(uid: uid)
+            
+            localName = (data?.name).orEmpty()
+        } catch {
+            print("error: \(error.localizedDescription)")
+        }
+    }
+    
+    func renamePokemon(currentName: String, to newName: String) {
+        do {
+            try pokemonRepository.provideRenamePokemon(from: currentName, to: newName)
+            
+            rename = ""
+        } catch {
+            print("error: \(error.localizedDescription)")
         }
     }
 }

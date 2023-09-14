@@ -11,7 +11,7 @@ import SwiftUI
 struct PokemonDetailView: View {
     
     let isFromMine: Bool
-    let nickname: String
+    let uid: UUID
     @Binding var id: UInt?
     
     @StateObject var viewModel = PokemonDetailViewModel()
@@ -19,9 +19,9 @@ struct PokemonDetailView: View {
     @Environment(\.colorScheme) var scheme
     @Environment(\.dismiss) var dismiss
     
-    init(id: Binding<UInt?>, nickname: String = "", isFromMine: Bool) {
+    init(id: Binding<UInt?>, uid: UUID = UUID(), isFromMine: Bool) {
         self._id = id
-        self.nickname = nickname
+        self.uid = uid
         self.isFromMine = isFromMine
     }
     
@@ -67,7 +67,7 @@ struct PokemonDetailView: View {
                                 
                                 if isFromMine {
                                     (
-                                        Text(nickname)
+                                        Text(viewModel.localName)
                                         .font(.title)
                                         .fontWeight(.bold)
                                     +
@@ -225,6 +225,30 @@ struct PokemonDetailView: View {
                 )
                 .padding(.vertical, 10)
                 .padding(.horizontal)
+                
+                if isFromMine {
+                    Button {
+                        viewModel.isShowRename.toggle()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            
+                            Text(LocalizableText.detailRename)
+                                .fontWeight(.bold)
+                                .foregroundColor(.blue)
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                        .frame(height: 45)
+                        .background(
+                            Capsule()
+                                .foregroundColor(.clear)
+                        )
+                        .padding(.vertical, 10)
+                        .padding(.horizontal)
+                    }
+                }
             }
             .background(
                 Rectangle()
@@ -260,15 +284,37 @@ struct PokemonDetailView: View {
                         name: viewModel.nickname.isEmpty ? (viewModel.phase.resultValue?.name).orEmpty() : viewModel.nickname,
                         root: (viewModel.phase.resultValue?.name).orEmpty()
                     )
+
                 })
             } message: {
                 Text(LocalizableText.detailCaughtSubtitle)
             }
+            .alert(LocalizableText.detailRename, isPresented: $viewModel.isShowRename
+            ) {
+                TextField(LocalizableText.detailCaughtPlaceholder, text: $viewModel.rename)
+                
+                Button("Cancel", action: {})
+                
+                Button("OK", action: {
+                    viewModel.renamePokemon(currentName: viewModel.localName, to: viewModel.rename)
+                    viewModel.getSpesific(uid: uid)
+                })
+                
+            } message: {
+                Text(LocalizableText.detailRenameSubtitle)
+            }
             
         }
         .onAppear(perform: {
-            Task {
-                await viewModel.getPokemonDetail(for: id.orZero())
+            if isFromMine {
+                Task {
+                    viewModel.getSpesific(uid: uid)
+                    await viewModel.getPokemonDetail(for: id.orZero())
+                }
+            } else {
+                Task {
+                    await viewModel.getPokemonDetail(for: id.orZero())
+                }
             }
         })
         .onChange(of: id, perform: { newValue in

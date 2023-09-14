@@ -7,6 +7,7 @@
 */
 
 "list_pokemon_title" = "Pokemon";
+"list_wild_pokemon" = "Wild Pokemon";
 
 "detail_catch" = "Catch";
 "detail_show_less" = "Show Less";
@@ -23,5 +24,6 @@
 "detail_success_subtitle" = "Success to save your pokemon profile, please check at My Pokemon menu";
 "detail_release" = "Release";
 "detail_rename" = "Rename";
+"detail_rename_subtitle" = "If you want rename your favorite pokemon, just type it";
 
 "my_pokemon_title" = "My Pokemon";

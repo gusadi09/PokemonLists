@@ -97,7 +97,7 @@ extension PokemonListsView {
                     }
                 }
                 .tabItem {
-                    Text("Wild Pokemon")
+                    Text(LocalizableText.listWildPokemon)
                 }
                 
                 MyPokemonView()
@@ -173,7 +173,7 @@ extension PokemonListsView {
                     }
                 }
                 .tabItem {
-                    Text("Wild Pokemon")
+                    Text(LocalizableText.listWildPokemon)
                 }
                 
                 MyPokemonView()

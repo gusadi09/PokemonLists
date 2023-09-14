@@ -7,6 +7,7 @@
 */
 
 "list_pokemon_title" = "Pokemon";
+"list_wild_pokemon" = "Pokemon Liar";
 
 "detail_catch" = "Tangkap";
 "detail_show_less" = "Tampilkan Sedikit";
@@ -23,5 +24,6 @@
 "detail_success_subtitle" = "Berhasil menyimpan profil pokemon kamu, silahkan cek pada menu Pokemon Saya";
 "detail_release" = "Lepas";
 "detail_rename" = "Ubah Nama";
+"detail_rename_subtitle" = "Jika kamu ingin merubah nama pokemon favoritmu, silahkan ketik";
 
 "my_pokemon_title" = "Pokemon Saya";

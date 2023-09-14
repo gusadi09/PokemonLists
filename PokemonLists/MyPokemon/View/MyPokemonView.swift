@@ -66,7 +66,7 @@ extension MyPokemonView {
                 } else {
                     PokemonDetailView(
                         id: $viewModel.id,
-                        nickname: self.viewModel.nickname,
+                        uid: self.viewModel.uid ?? UUID(),
                         isFromMine: true
                     )
                 }
@@ -102,7 +102,7 @@ extension MyPokemonView {
                 } else {
                     PokemonDetailView(
                         id: $viewModel.id,
-                        nickname: self.viewModel.nickname,
+                        uid: self.viewModel.uid ?? UUID(),
                         isFromMine: true
                     )
                 }
@@ -116,31 +116,26 @@ extension MyPokemonView {
         @EnvironmentObject var viewModel: MyPokemonViewModel
         
         var body: some View {
-            NavigationStack {
-                VStack {
-                    List(viewModel.savedList, id: \.name, selection: $viewModel.uid) { item in
-                        
-                        NavigationLink {
-                            PokemonDetailView(id: $viewModel.id, nickname: item.name.orEmpty(), isFromMine: true)
-                        } label: {
-                            Text("\(item.name.orEmpty()) ")
-                            +
-                            Text("(\(item.rootParent.orEmpty()))")
-                                .foregroundColor(.gray)
-                        }
-                        .tag(item.uid)
-                        .onTapGesture {
-                            viewModel.id = UInt(item.id)
-                        }
-                        
+            VStack {
+                List(viewModel.savedList, id: \.name, selection: $viewModel.id) { item in
+                    
+                    NavigationLink {
+                        PokemonDetailView(id: $viewModel.id, uid: item.uid ?? UUID(), isFromMine: true)
+                    } label: {
+                        Text("\(item.name.orEmpty()) ")
+                        +
+                        Text("(\(item.rootParent.orEmpty()))")
+                            .foregroundColor(.gray)
                     }
+                    .tag(UInt(item.id))
                     
                 }
-                .navigationTitle(LocalizableText.myPokemonTitle)
+                .onAppear {
+                    viewModel.getAllPokemon()
+                }
+                
             }
-            .onAppear {
-                viewModel.getAllPokemon()
-            }
+            .navigationTitle(LocalizableText.myPokemonTitle)
         }
     }
 }
