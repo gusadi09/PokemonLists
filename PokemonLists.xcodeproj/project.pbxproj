@@ -19,6 +19,8 @@
 		ECE9739A2AB20D9600E4F036 /* MyPokemonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE973992AB20D9600E4F036 /* MyPokemonViewModel.swift */; };
 		ECE9739F2AB20ECA00E4F036 /* PokemonDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE9739E2AB20ECA00E4F036 /* PokemonDetailViewModelTests.swift */; };
 		ECE973A22AB20EF600E4F036 /* MyPokemonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE973A12AB20EF600E4F036 /* MyPokemonViewModelTests.swift */; };
+		ECE973AA2AB2C25800E4F036 /* PokemonDataSource in Frameworks */ = {isa = PBXBuildFile; productRef = ECE973A92AB2C25800E4F036 /* PokemonDataSource */; };
+		ECE973AC2AB2C25800E4F036 /* PokemonExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = ECE973AB2AB2C25800E4F036 /* PokemonExtensions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE973AC2AB2C25800E4F036 /* PokemonExtensions in Frameworks */,
+				ECE973AA2AB2C25800E4F036 /* PokemonDataSource in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +77,7 @@
 				ECE973472AB2099A00E4F036 /* PokemonLists */,
 				ECE9737D2AB209DA00E4F036 /* PokemonListsTests */,
 				ECE973462AB2099A00E4F036 /* Products */,
+				ECE973A82AB2C25800E4F036 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,6 +253,13 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		ECE973A82AB2C25800E4F036 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -264,6 +276,10 @@
 			dependencies = (
 			);
 			name = PokemonLists;
+			packageProductDependencies = (
+				ECE973A92AB2C25800E4F036 /* PokemonDataSource */,
+				ECE973AB2AB2C25800E4F036 /* PokemonExtensions */,
+			);
 			productName = PokemonLists;
 			productReference = ECE973452AB2099A00E4F036 /* PokemonLists.app */;
 			productType = "com.apple.product-type.application";
@@ -636,6 +652,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ECE973A92AB2C25800E4F036 /* PokemonDataSource */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PokemonDataSource;
+		};
+		ECE973AB2AB2C25800E4F036 /* PokemonExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PokemonExtensions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ECE9733D2AB2099A00E4F036 /* Project object */;
 }
