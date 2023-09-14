@@ -14,6 +14,8 @@ final class PokemonDetailViewModel: ObservableObject {
     
     @Published var phase: ResultPhase<PKPokemonDetail> = .initial
     
+    @Published var showMoreMoves = false
+    
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
         self.pokemonRepository = pokemonRepository
     }
@@ -29,5 +31,17 @@ final class PokemonDetailViewModel: ObservableObject {
         } catch {
             self.phase = .error(error)
         }
+    }
+    
+    @MainActor
+    func showMoreMoveToggle() {
+        self.showMoreMoves.toggle()
+    }
+    
+    @MainActor
+    func movesArray() -> [PKMove] {
+        guard let array = phase.resultValue?.moves else { return [] }
+        
+        return showMoreMoves ? array : Array(array.prefix(9))
     }
 }

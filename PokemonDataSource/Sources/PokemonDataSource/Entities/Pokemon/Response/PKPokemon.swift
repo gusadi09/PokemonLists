@@ -59,6 +59,24 @@ public extension PKPokemonList {
 }
 
 public struct PKMove: Codable {
+    public let move: PKMoveData?
+    
+    public init(move: PKMoveData?) {
+        self.move = move
+    }
+}
+
+public extension PKMove {
+    static var sample: PKMove {
+        PKMove(move: PKMoveData.sample)
+    }
+    
+    static var sampleData: Data {
+        sample.toData()
+    }
+}
+
+public struct PKMoveData: Codable {
     public let name: String?
     
     public init(name: String?) {
@@ -66,9 +84,9 @@ public struct PKMove: Codable {
     }
 }
 
-public extension PKMove {
-    static var sample: PKMove {
-        PKMove(name: "Test Move")
+public extension PKMoveData {
+    static var sample: PKMoveData {
+        PKMoveData(name: "Test Move")
     }
     
     static var sampleData: Data {
