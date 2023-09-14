@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC17370F2AB2E22E0007E41E /* ResultPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC17370E2AB2E22E0007E41E /* ResultPhase.swift */; };
 		ECE973492AB2099A00E4F036 /* PokemonListsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE973482AB2099A00E4F036 /* PokemonListsApp.swift */; };
 		ECE973522AB2099C00E4F036 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE973512AB2099C00E4F036 /* Assets.xcassets */; };
 		ECE973562AB2099C00E4F036 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE973552AB2099C00E4F036 /* Preview Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EC17370E2AB2E22E0007E41E /* ResultPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultPhase.swift; sourceTree = "<group>"; };
 		ECE973452AB2099A00E4F036 /* PokemonLists.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonLists.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECE973482AB2099A00E4F036 /* PokemonListsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListsApp.swift; sourceTree = "<group>"; };
 		ECE973512AB2099C00E4F036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +73,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC17370D2AB2E21E0007E41E /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				EC17370E2AB2E22E0007E41E /* ResultPhase.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		ECE9733C2AB2099A00E4F036 = {
 			isa = PBXGroup;
 			children = (
@@ -246,6 +256,7 @@
 		ECE973A72AB20F4900E4F036 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EC17370D2AB2E21E0007E41E /* Enum */,
 				ECE973A52AB20F3400E4F036 /* Entitlements */,
 				ECE973A32AB20F1400E4F036 /* Base */,
 				ECE973A62AB20F3C00E4F036 /* Resources */,
@@ -368,6 +379,7 @@
 				ECE973932AB20CD300E4F036 /* PokemonDetailView.swift in Sources */,
 				ECE9739A2AB20D9600E4F036 /* MyPokemonViewModel.swift in Sources */,
 				ECE973972AB20CFD00E4F036 /* MyPokemonView.swift in Sources */,
+				EC17370F2AB2E22E0007E41E /* ResultPhase.swift in Sources */,
 				ECE973892AB20A6900E4F036 /* PokemonListsView.swift in Sources */,
 				ECE973902AB20CB900E4F036 /* PokemonDetailViewModel.swift in Sources */,
 				ECE9738C2AB20A7D00E4F036 /* PokemonListsViewModel.swift in Sources */,

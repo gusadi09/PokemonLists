@@ -5,11 +5,156 @@
 //  Created by Gus Adi on 13/09/23.
 //
 
+import PokemonExtensions
 import SwiftUI
 
 struct PokemonListsView: View {
+    
+    @StateObject var viewModel = PokemonListsViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        #if os(macOS)
+        
+        SplitView()
+            .environmentObject(viewModel)
+        
+        #elseif os(iOS)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            SplitView()
+                .environmentObject(viewModel)
+        } else {
+            StackView()
+                .environmentObject(viewModel)
+        }
+        #endif
+    }
+}
+
+extension PokemonListsView {
+    struct SplitView: View {
+        
+        @EnvironmentObject var viewModel: PokemonListsViewModel
+        
+        var body: some View {
+            #if os(macOS)
+            
+            NavigationSplitView {
+                Group {
+                    if viewModel.phase == .loading {
+                        VStack {
+                            Spacer()
+                            
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                            
+                            Spacer()
+                        }
+                    } else {
+                        List {
+                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
+                                NavigationLink {
+                                    Text(item.name.orEmpty())
+                                } label: {
+                                    Text(item.name.orEmpty())
+                                }
+                                
+                            }
+                        }
+                        .listStyle(.inset(alternatesRowBackgrounds: true))
+                    }
+                }
+                .navigationTitle("Pokemon")
+                .onAppear {
+                    Task {
+                        await viewModel.getPokemonList()
+                    }
+                }
+            } detail: {
+                if viewModel.firstItem() == nil {
+                    EmptyView()
+                } else {
+                    Text((viewModel.firstItem()?.name).orEmpty())
+                }
+            }
+            
+            #elseif os(iOS)
+            NavigationSplitView {
+                Group {
+                    if viewModel.phase == .loading {
+                        VStack {
+                            Spacer()
+                            
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                            
+                            Spacer()
+                        }
+                    } else {
+                        List {
+                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
+                                NavigationLink {
+                                    Text(item.name.orEmpty())
+                                } label: {
+                                    Text(item.name.orEmpty())
+                                }
+                            }
+                        }
+                        .listStyle(.inset)
+                    }
+                }
+                .onAppear {
+                    Task {
+                        await viewModel.getPokemonList()
+                    }
+                }
+                .navigationTitle("Pokemon")
+            } detail: {
+                if viewModel.firstItem() == nil {
+                    EmptyView()
+                } else {
+                    Text((viewModel.firstItem()?.name).orEmpty())
+                }
+            }
+            #endif
+        }
+    }
+    
+    struct StackView: View {
+        
+        @EnvironmentObject var viewModel: PokemonListsViewModel
+        
+        var body: some View {
+            NavigationStack {
+                Group {
+                    if viewModel.phase == .loading {
+                        VStack {
+                            Spacer()
+                            
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                            
+                            Spacer()
+                        }
+                    } else {
+                        List {
+                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
+                                NavigationLink {
+                                    Text(item.name.orEmpty())
+                                } label: {
+                                    Text(item.name.orEmpty())
+                                }
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Pokemon")
+            }
+            .onAppear {
+                Task {
+                    await viewModel.getPokemonList()
+                }
+            }
+        }
     }
 }
 
