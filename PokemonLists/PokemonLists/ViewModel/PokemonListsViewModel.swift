@@ -60,4 +60,15 @@ final class PokemonListsViewModel: ObservableObject {
     func firstItem() -> PKPokemon? {
         self.phase.resultValue?.first
     }
+    
+    func getIdOnly(for item: PKPokemon) -> UInt {
+        return (
+            item.url?
+                .split(separator: "/")
+                .compactMap({ item in
+                    UInt(item)
+                })
+                .first
+        ).orZero()
+    }
 }

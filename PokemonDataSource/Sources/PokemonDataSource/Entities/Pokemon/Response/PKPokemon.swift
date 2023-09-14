@@ -23,15 +23,17 @@ public struct PKPokemonList: Codable {
 
 public struct PKPokemon: Codable, Hashable, Equatable {
     public let name: String?
+    public let url: String?
     
-    public init(name: String?) {
+    public init(name: String?, url: String?) {
         self.name = name
+        self.url = url
     }
 }
 
 public extension PKPokemon {
     static var sample: PKPokemon {
-        PKPokemon(name: "Test Pokemon")
+        PKPokemon(name: "Test Pokemon", url: "1")
     }
     
     static var sampleData: Data {
