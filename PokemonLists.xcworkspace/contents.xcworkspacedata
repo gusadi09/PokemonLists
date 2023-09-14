@@ -16,4 +16,7 @@
    <FileRef
       location = "group:PokemonExtensions/Tests/PokemonExtensions.xctestplan">
    </FileRef>
+   <FileRef
+      location = "group:PokemonListsTests/PokemonLists.xctestplan">
+   </FileRef>
 </Workspace>
