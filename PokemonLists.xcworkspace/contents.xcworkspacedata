@@ -8,6 +8,6 @@
       location = "container:PokemonLists.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../PokemonDataSource.xctestplan">
+      location = "group:PokemonDataSource.xctestplan">
    </FileRef>
 </Workspace>

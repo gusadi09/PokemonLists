@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "E2B586DE-5C25-49E7-BDEF-0E9AC806D4F6",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "PokemonDataSourceTests",
+          "name" : "PokemonDataSourceTests"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PokemonDataSourceTests",
+        "name" : "PokemonDataSourceTests"
+      }
+    }
+  ],
+  "version" : 1
+}
