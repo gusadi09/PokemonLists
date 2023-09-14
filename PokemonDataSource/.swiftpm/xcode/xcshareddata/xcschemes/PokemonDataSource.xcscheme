@@ -29,11 +29,41 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:../../PokemonDataSource.xctestplan"
+            reference = "container:../PokemonDataSource copy.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PokemonDataSourceTests"
+               BuildableName = "PokemonDataSourceTests"
+               BlueprintName = "PokemonDataSourceTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PokemonDataSourceTests"
+               BuildableName = "PokemonDataSourceTests"
+               BlueprintName = "PokemonDataSourceTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PokemonDataSourceTests"
+               BuildableName = "PokemonDataSourceTests"
+               BlueprintName = "PokemonDataSourceTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference

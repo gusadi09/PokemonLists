@@ -1,0 +1,62 @@
+{
+  "configurations" : [
+    {
+      "id" : "340E56E2-4E3F-49D9-B5A2-E2A7C00D387F",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:PokemonDataSource",
+          "identifier" : "PokemonDataSourceTests",
+          "name" : "PokemonDataSourceTests"
+        },
+        {
+          "containerPath" : "container:PokemonExtensions",
+          "identifier" : "PokemonExtensionsTests",
+          "name" : "PokemonExtensionsTests"
+        },
+        {
+          "containerPath" : "container:PokemonLists.xcodeproj",
+          "identifier" : "ECE9737B2AB209DA00E4F036",
+          "name" : "PokemonListsTests"
+        }
+      ]
+    },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:PokemonLists.xcodeproj",
+      "identifier" : "ECE973442AB2099A00E4F036",
+      "name" : "PokemonLists"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:PokemonLists.xcodeproj",
+        "identifier" : "ECE9737B2AB209DA00E4F036",
+        "name" : "PokemonListsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:PokemonDataSource",
+        "identifier" : "PokemonDataSourceTests",
+        "name" : "PokemonDataSourceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:PokemonExtensions",
+        "identifier" : "PokemonExtensionsTests",
+        "name" : "PokemonExtensionsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

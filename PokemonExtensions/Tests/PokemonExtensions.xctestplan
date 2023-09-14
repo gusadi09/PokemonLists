@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "DAC7E142-33D8-46E8-A661-D8F0C173D2CE",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "PokemonExtensionsTests",
+          "name" : "PokemonExtensionsTests"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PokemonExtensionsTests",
+        "name" : "PokemonExtensionsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

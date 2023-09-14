@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  
+
+  Created by Gus Adi on 14/09/23.
+  
+*/
+
+"general_internal_server_error" = "Sorry, we have problem on our internal server. Please try again later";

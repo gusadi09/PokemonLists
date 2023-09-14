@@ -5,6 +5,8 @@ import PackageDescription
 
 let package = Package(
     name: "PokemonDataSource",
+    defaultLocalization: "id",
+    platforms: [.iOS(.v15), .macOS(.v12)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -23,7 +25,7 @@ let package = Package(
         .target(
             name: "PokemonDataSource",
             dependencies: ["Moya", "PokemonExtensions"],
-            resources: [.process("./LocalDB/Model")]
+            resources: [.process("./LocalDB/Model"), .process("./Localizable/String")]
         ),
         .testTarget(
             name: "PokemonDataSourceTests",

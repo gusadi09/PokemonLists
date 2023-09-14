@@ -6,30 +6,41 @@
 //
 
 import XCTest
+@testable import PokemonLists
 
 final class PokemonListsViewModelTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private let sut = PokemonListsViewModel()
+    
+    func test_decreaseOffsetPokemon() throws {
+        Task {
+            sut.currentOffset = 1
+            await sut.decreaseOffset()
+            
+            XCTAssertEqual(sut.currentOffset, 0)
+        }
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    func test_increaseOffsetPokemon() throws {
+        Task {
+            await sut.increaseOffset()
+            
+            XCTAssertEqual(sut.currentOffset, 1)
         }
     }
 
+    func test_getPokemonList() throws {
+        Task {
+            await sut.getPokemonList()
+            
+            XCTAssertFalse((sut.phase.resultValue ?? []).isEmpty)
+        }
+    }
+    
+    func test_getFirstItem() throws {
+        Task {
+            await sut.getPokemonList()
+            XCTAssertNotNil(sut.firstItem())
+        }
+    }
 }
