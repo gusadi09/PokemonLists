@@ -39,7 +39,7 @@ extension PokemonListsView {
             #if os(macOS)
             
             NavigationSplitView {
-                Group {
+                VStack {
                     if viewModel.phase == .loading {
                         VStack {
                             Spacer()
@@ -62,8 +62,29 @@ extension PokemonListsView {
                         }
                         .listStyle(.inset(alternatesRowBackgrounds: true))
                     }
+                    
+                    HStack {
+                        Button {
+                            viewModel.decreaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                        .disabled(!viewModel.isPrevAvailable)
+
+                        Text("\(viewModel.currentOffset)")
+                        
+                        Button {
+                            viewModel.increaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.right")
+                        }
+                        .disabled(!viewModel.isNextAvailable)
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .edgesIgnoringSafeArea(.all)
                 }
-                .navigationTitle("Pokemon")
+                .navigationTitle(LocalizableText.listPokemonTitle)
                 .onAppear {
                     Task {
                         await viewModel.getPokemonList()
@@ -79,7 +100,7 @@ extension PokemonListsView {
             
             #elseif os(iOS)
             NavigationSplitView {
-                Group {
+                VStack {
                     if viewModel.phase == .loading {
                         VStack {
                             Spacer()
@@ -101,13 +122,34 @@ extension PokemonListsView {
                         }
                         .listStyle(.inset)
                     }
+                    
+                    HStack {
+                        Button {
+                            viewModel.decreaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                        .disabled(!viewModel.isPrevAvailable)
+
+                        Text("\(viewModel.currentOffset)")
+                        
+                        Button {
+                            viewModel.increaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.right")
+                        }
+                        .disabled(!viewModel.isNextAvailable)
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .edgesIgnoringSafeArea(.all)
                 }
                 .onAppear {
                     Task {
                         await viewModel.getPokemonList()
                     }
                 }
-                .navigationTitle("Pokemon")
+                .navigationTitle(LocalizableText.listPokemonTitle)
             } detail: {
                 if viewModel.firstItem() == nil {
                     EmptyView()
@@ -125,7 +167,7 @@ extension PokemonListsView {
         
         var body: some View {
             NavigationStack {
-                Group {
+                VStack {
                     if viewModel.phase == .loading {
                         VStack {
                             Spacer()
@@ -146,8 +188,29 @@ extension PokemonListsView {
                             }
                         }
                     }
+                    
+                    HStack {
+                        Button {
+                            viewModel.decreaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                        .disabled(!viewModel.isPrevAvailable)
+
+                        Text("\(viewModel.currentOffset)")
+                        
+                        Button {
+                            viewModel.increaseOffset()
+                        } label: {
+                            Image(systemName: "chevron.right")
+                        }
+                        .disabled(!viewModel.isNextAvailable)
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .edgesIgnoringSafeArea(.all)
                 }
-                .navigationTitle("Pokemon")
+                .navigationTitle(LocalizableText.listPokemonTitle)
             }
             .onAppear {
                 Task {

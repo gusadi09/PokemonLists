@@ -9,10 +9,14 @@ import Foundation
 
 public struct PKPokemonList: Codable {
     public let count: Int?
+    public let next: String?
+    public let previous: String?
     public let results: [PKPokemon]?
     
-    public init(count: Int?, results: [PKPokemon]?) {
+    public init(count: Int?, next: String?, previous: String?, results: [PKPokemon]?) {
         self.count = count
+        self.next = next
+        self.previous = previous
         self.results = results
     }
 }
@@ -39,6 +43,8 @@ public extension PKPokemonList {
     static var sample: PKPokemonList {
         PKPokemonList(
             count: 1,
+            next: "available",
+            previous: nil,
             results: [
                 PKPokemon.sample
             ]
