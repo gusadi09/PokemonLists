@@ -11,6 +11,7 @@ import Moya
 
 public enum PokemonTargetType {
     case getPokemonList(UInt)
+    case getDetailPokemon(UInt)
 }
 
 extension PokemonTargetType: PokemonAppTargetType {
@@ -21,12 +22,16 @@ extension PokemonTargetType: PokemonAppTargetType {
                 "limit": 20,
                 "offset": offset
             ]
+        case .getDetailPokemon:
+            return [:]
         }
     }
 
     var parameterEncoding: Moya.ParameterEncoding {
         switch self {
         case .getPokemonList:
+            return URLEncoding.default
+        case .getDetailPokemon:
             return URLEncoding.default
         }
     }
@@ -39,6 +44,8 @@ extension PokemonTargetType: PokemonAppTargetType {
         switch self {
         case .getPokemonList:
             return "/pokemon"
+        case .getDetailPokemon(let id):
+            return "/pokemon/\(id)"
         }
     }
     
@@ -46,12 +53,16 @@ extension PokemonTargetType: PokemonAppTargetType {
         switch self {
         case .getPokemonList:
             return PKPokemonList.sampleData
+        case .getDetailPokemon:
+            return PKPokemonDetail.sampleData
         }
     }
 
     public var method: Moya.Method {
         switch self {
         case .getPokemonList:
+            return .get
+        case .getDetailPokemon:
             return .get
         }
     }

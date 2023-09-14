@@ -30,4 +30,22 @@ final class PokemonRepositoryTests: XCTestCase {
             XCTAssertThrowsError(error)
         }
     }
+    
+    func test_getPokemonDetailSuccess() async throws {
+        let result = try await sut.provideGetPokemonDetail(for: 1)
+        
+        XCTAssertEqual(result.name, "test")
+    }
+    
+    func test_getPokemonDetailError() async throws {
+        do {
+            _ = try await errorSut.provideGetPokemonDetail(for: 1)
+            
+            XCTFail("Not Expected Result")
+        } catch(let error as ErrorResponse) {
+            XCTAssertEqual(error.status, 404)
+        } catch {
+            XCTAssertThrowsError(error)
+        }
+    }
 }
