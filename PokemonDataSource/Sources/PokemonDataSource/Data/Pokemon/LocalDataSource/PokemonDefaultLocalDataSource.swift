@@ -27,4 +27,12 @@ public final class PokemonDefaultLocalDataSource: PokemonLocalDataSource {
     public func loadAllPokemon() throws -> [Pokemon] {
         try coreData.loadPokemon()
     }
+    
+    public func deleteSpesificPokemon(name: String) throws {
+        try coreData.deletePokemon(name: name)
+    }
+    
+    public func deleteAllPokemon() throws {
+        try coreData.deleteAllPokemon()
+    }
 }

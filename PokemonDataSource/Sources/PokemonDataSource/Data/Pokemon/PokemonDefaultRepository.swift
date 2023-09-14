@@ -39,4 +39,12 @@ public final class PokemonDefaultRepository: PokemonRepository {
     public func provideRenamePokemon(from old: String, to new: String) throws {
         try self.local.renamePokemon(oldName: old, newName: new)
     }
+    
+    public func provideDeleteSpesificPokemon(at name: String) throws {
+        try self.local.deleteSpesificPokemon(name: name)
+    }
+    
+    public func provideDeleteAllPokemon() throws {
+        try self.local.deleteAllPokemon()
+    }
 }

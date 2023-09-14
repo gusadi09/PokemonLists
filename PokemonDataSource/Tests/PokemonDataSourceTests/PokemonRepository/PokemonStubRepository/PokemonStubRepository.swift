@@ -71,4 +71,12 @@ final class PokemonStubRepository: PokemonRepository {
     func provideLoadMyPokemon() throws -> [PokemonDataSource.Pokemon] {
         try self.local.loadAllPokemon()
     }
+    
+    func provideDeleteSpesificPokemon(at name: String) throws {
+        try self.local.deleteSpesificPokemon(name: name)
+    }
+    
+    func provideDeleteAllPokemon() throws {
+        try self.local.deleteAllPokemon()
+    }
 }
