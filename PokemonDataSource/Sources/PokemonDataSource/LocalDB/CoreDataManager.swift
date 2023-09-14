@@ -8,9 +8,9 @@
 import CoreData
 import Foundation
 
-class CoreDataManager: NSPersistentContainer {
+public class PokemonCoreDataManager: NSPersistentContainer {
  
-    init() {
+    public init() {
         guard
             let objectModelURL = Bundle.module.url(forResource: "Model", withExtension: "momd"),
             let objectModel = NSManagedObjectModel(contentsOf: objectModelURL)
@@ -35,14 +35,42 @@ class CoreDataManager: NSPersistentContainer {
         return fetchRequest
     }
     
-    func savePokemon(name: String) throws {
+    func savePokemon(id: UInt, name: String, root: String) throws {
         let entity = Pokemon(context: self.viewContext)
         
+        entity.id = Int64(id)
         entity.name = name
+        entity.rootParent = root
+        entity.renameAttempt = 0
         
         if self.viewContext.hasChanges {
             try self.viewContext.save()
         }
+    }
+    
+    func editPokemon(name: String, newValue: String) throws {
+        let fetchRequest = Pokemon.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.fetchLimit = 1
+        
+        guard let data = try self.viewContext.fetch(fetchRequest).first else { return }
+        
+        data.name = "\(newValue)-\(fibonacciSeries(num: data.renameAttempt))"
+        data.renameAttempt += 1
+        if self.viewContext.hasChanges {
+            try self.viewContext.save()
+        }
+    }
+    
+    func fibonacciSeries(num: Int64) -> Int64 {
+       if (num == 0){
+          return 0
+       }
+       else if (num == 1){
+          return 1
+       }
+        
+       return fibonacciSeries(num: num - 1) + fibonacciSeries(num: num -  2)
     }
     
     func deletePokemon(name: String) throws {

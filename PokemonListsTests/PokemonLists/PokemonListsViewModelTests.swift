@@ -43,4 +43,19 @@ final class PokemonListsViewModelTests: XCTestCase {
             XCTAssertNotNil(sut.firstItem())
         }
     }
+    
+    func test_getFirstItemId() throws {
+        Task {
+            await sut.getPokemonList()
+            XCTAssertEqual(sut.getIdForFirstItem(), 1)
+        }
+    }
+    
+    func test_getIdOnly() throws {
+        Task {
+            await sut.getPokemonList()
+            guard let pokemon = sut.phase.resultValue?.randomElement() else { return }
+            XCTAssertNotEqual(sut.getIdOnly(for: pokemon), 0)
+        }
+    }
 }

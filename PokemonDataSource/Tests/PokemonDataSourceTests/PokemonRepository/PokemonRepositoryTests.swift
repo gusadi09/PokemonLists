@@ -30,4 +30,60 @@ final class PokemonRepositoryTests: XCTestCase {
             XCTAssertThrowsError(error)
         }
     }
+    
+    func test_getPokemonDetailSuccess() async throws {
+        let result = try await sut.provideGetPokemonDetail(for: 1)
+        
+        XCTAssertEqual(result.name, "test")
+    }
+    
+    func test_getPokemonDetailError() async throws {
+        do {
+            _ = try await errorSut.provideGetPokemonDetail(for: 1)
+            
+            XCTFail("Not Expected Result")
+        } catch(let error as ErrorResponse) {
+            XCTAssertEqual(error.status, 404)
+        } catch {
+            XCTAssertThrowsError(error)
+        }
+    }
+    
+    func test_catchPokemonAndLoad() throws {
+        let sutTemp = PokemonStubRepository(isErrorRemote: false)
+        try sutTemp.provideCatchPokemon(with: 0, nickname: "maggot", root: "fish")
+        
+        let data = try sutTemp.provideLoadMyPokemon()
+        
+        XCTAssertFalse(data.isEmpty)
+    }
+    
+    func test_renamePokemonAndLoad() throws {
+        let sutTemp = PokemonStubRepository(isErrorRemote: false)
+        try sutTemp.provideCatchPokemon(with: 0, nickname: "maggot", root: "fish")
+        
+        try sutTemp.provideRenamePokemon(from: "maggot", to: "seven")
+        
+        let data = try sutTemp.provideLoadMyPokemon().first(where: { item in
+            item.name.orEmpty().contains("seven")
+        })
+        
+        XCTAssertEqual(data?.name, "seven-0")
+    }
+    
+    func test_spesificDelete() throws {
+        try sut.provideDeleteSpesificPokemon(at: "seven-0")
+        
+        let data = try sut.provideLoadMyPokemon()
+        
+        XCTAssertTrue(data.isEmpty)
+    }
+    
+    func test_deleteAll() throws {
+        try sut.provideDeleteAllPokemon()
+        
+        let data = try sut.provideLoadMyPokemon()
+        
+        XCTAssertTrue(data.isEmpty)
+    }
 }

@@ -35,6 +35,8 @@ extension PokemonListsView {
         
         @EnvironmentObject var viewModel: PokemonListsViewModel
         
+        @Environment(\.colorScheme) var scheme
+        
         var body: some View {
             #if os(macOS)
             
@@ -50,15 +52,9 @@ extension PokemonListsView {
                             Spacer()
                         }
                     } else {
-                        List {
-                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
-                                NavigationLink {
-                                    Text(item.name.orEmpty())
-                                } label: {
-                                    Text(item.name.orEmpty())
-                                }
-                                
-                            }
+                        List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
+                            Text(item.name.orEmpty())
+                                .tag(viewModel.getIdOnly(for: item))
                         }
                         .listStyle(.inset(alternatesRowBackgrounds: true))
                     }
@@ -94,7 +90,9 @@ extension PokemonListsView {
                 if viewModel.firstItem() == nil {
                     EmptyView()
                 } else {
-                    Text((viewModel.firstItem()?.name).orEmpty())
+                    PokemonDetailView(
+                        id: $viewModel.selected
+                    )
                 }
             }
             
@@ -111,14 +109,10 @@ extension PokemonListsView {
                             Spacer()
                         }
                     } else {
-                        List {
-                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
-                                NavigationLink {
-                                    Text(item.name.orEmpty())
-                                } label: {
-                                    Text(item.name.orEmpty())
-                                }
-                            }
+                        List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
+                            
+                            Text(item.name.orEmpty())
+                                .tag(viewModel.getIdOnly(for: item))
                         }
                         .listStyle(.inset)
                     }
@@ -154,7 +148,9 @@ extension PokemonListsView {
                 if viewModel.firstItem() == nil {
                     EmptyView()
                 } else {
-                    Text((viewModel.firstItem()?.name).orEmpty())
+                    PokemonDetailView(
+                        id: $viewModel.selected
+                    )
                 }
             }
             #endif
@@ -178,14 +174,16 @@ extension PokemonListsView {
                             Spacer()
                         }
                     } else {
-                        List {
-                            ForEach(viewModel.phase.resultValue ?? [], id: \.name) { item in
-                                NavigationLink {
-                                    Text(item.name.orEmpty())
-                                } label: {
-                                    Text(item.name.orEmpty())
-                                }
+                        List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
+                            
+                            NavigationLink {
+                                PokemonDetailView(id: $viewModel.selected)
+                            } label: {
+                                Text(item.name.orEmpty())
+                                    
                             }
+                            .tag(viewModel.getIdOnly(for: item))
+                            
                         }
                     }
                     

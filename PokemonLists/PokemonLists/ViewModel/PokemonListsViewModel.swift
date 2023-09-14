@@ -21,6 +21,8 @@ final class PokemonListsViewModel: ObservableObject {
     
     @Published var isPrevAvailable = false
     
+    @Published var selected: UInt? = 1
+    
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
         self.pokemonRepository = pokemonRepository
     }
@@ -59,5 +61,27 @@ final class PokemonListsViewModel: ObservableObject {
     
     func firstItem() -> PKPokemon? {
         self.phase.resultValue?.first
+    }
+    
+    func getIdOnly(for item: PKPokemon) -> UInt {
+        return (
+            item.url?
+                .split(separator: "/")
+                .compactMap({ item in
+                    UInt(item)
+                })
+                .first
+        ).orZero()
+    }
+    
+    func getIdForFirstItem() -> UInt {
+        return (
+            (firstItem()?.url)?
+                .split(separator: "/")
+                .compactMap({ item in
+                    UInt(item)
+                })
+                .first
+        ).orZero()
     }
 }

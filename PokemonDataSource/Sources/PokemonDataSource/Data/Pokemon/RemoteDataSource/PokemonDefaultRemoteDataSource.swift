@@ -19,4 +19,8 @@ final public class PokemonDefaultRemoteDataSource: PokemonRemoteDataSource {
     public func getPokemonList(offset: UInt) async throws -> PKPokemonList {
         try await self.provider.request(.getPokemonList(offset), model: PKPokemonList.self)
     }
+    
+    public func getPokemonDetail(id: UInt) async throws -> PKPokemonDetail {
+        try await self.provider.request(.getDetailPokemon(id), model: PKPokemonDetail.self)
+    }
 }
