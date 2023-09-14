@@ -38,6 +38,7 @@ public class PokemonCoreDataManager: NSPersistentContainer {
     func savePokemon(id: UInt, name: String, root: String) throws {
         let entity = Pokemon(context: self.viewContext)
         
+        entity.uid = UUID()
         entity.id = Int64(id)
         entity.name = name
         entity.rootParent = root

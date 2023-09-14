@@ -65,4 +65,17 @@ enum LocalizableText {
         "detail_success_subtitle",
         comment: "success save"
     )
+    static let detailRelease = NSLocalizedString(
+        "detail_release",
+        comment: "release"
+    )
+    static let detailRename = NSLocalizedString(
+        "detail_rename",
+        comment: "rename"
+    )
+    
+    static let myPokemonTitle = NSLocalizedString(
+        "my_pokemon_title",
+        comment: "my pokemon"
+    )
 }

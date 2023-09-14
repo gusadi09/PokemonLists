@@ -21,3 +21,7 @@
 "detail_caught_placeholder" = "Masukan nama pendek";
 "detail_success_save" = "Berhasi;";
 "detail_success_subtitle" = "Berhasil menyimpan profil pokemon kamu, silahkan cek pada menu Pokemon Saya";
+"detail_release" = "Lepas";
+"detail_rename" = "Ubah Nama";
+
+"my_pokemon_title" = "Pokemon Saya";

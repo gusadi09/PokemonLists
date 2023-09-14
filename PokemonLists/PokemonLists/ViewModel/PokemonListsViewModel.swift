@@ -23,6 +23,8 @@ final class PokemonListsViewModel: ObservableObject {
     
     @Published var selected: UInt? = 1
     
+    @Published var sidebar: SideBarSelection = .wild
+    
     init(pokemonRepository: PokemonRepository = PokemonDefaultRepository()) {
         self.pokemonRepository = pokemonRepository
     }

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PokemonDetailView: View {
     
+    let isFromMine: Bool
+    let nickname: String
     @Binding var id: UInt?
     
     @StateObject var viewModel = PokemonDetailViewModel()
@@ -17,8 +19,10 @@ struct PokemonDetailView: View {
     @Environment(\.colorScheme) var scheme
     @Environment(\.dismiss) var dismiss
     
-    init(id: Binding<UInt?>) {
+    init(id: Binding<UInt?>, nickname: String = "", isFromMine: Bool) {
         self._id = id
+        self.nickname = nickname
+        self.isFromMine = isFromMine
     }
     
     var body: some View {
@@ -33,7 +37,7 @@ struct PokemonDetailView: View {
             } else {
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 12) {
                             
                             HStack {
                                 Spacer()
@@ -61,11 +65,26 @@ struct PokemonDetailView: View {
                             HStack {
                                 Spacer()
                                 
-                                Text((viewModel.phase.resultValue?.name).orEmpty())
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .padding(.horizontal)
-                                    .id(1)
+                                if isFromMine {
+                                    (
+                                        Text(nickname)
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                    +
+                                    Text(" (\((viewModel.phase.resultValue?.name).orEmpty()))")
+                                        .font(.title2)
+                                        .foregroundColor(.gray)
+                                    )
+                                        .padding(.horizontal)
+                                        .id(1)
+                                        
+                                } else {
+                                    Text((viewModel.phase.resultValue?.name).orEmpty())
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                        .padding(.horizontal)
+                                        .id(1)
+                                }
                                 
                                 Spacer()
                             }
@@ -184,12 +203,14 @@ struct PokemonDetailView: View {
             }
             
             Button {
-                viewModel.tryToCatch()
+                if !isFromMine {
+                    viewModel.tryToCatch()
+                }
             } label: {
                 HStack {
                     Spacer()
                     
-                    Text(LocalizableText.detailCatch)
+                    Text(isFromMine ? LocalizableText.detailRelease : LocalizableText.detailCatch)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                     
@@ -262,6 +283,6 @@ struct PokemonDetailView: View {
 
 struct PokemonDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetailView(id: .constant(1))
+        PokemonDetailView(id: .constant(1), isFromMine: false)
     }
 }

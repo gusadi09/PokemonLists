@@ -39,120 +39,149 @@ extension PokemonListsView {
         
         var body: some View {
             #if os(macOS)
-            
-            NavigationSplitView {
-                VStack {
-                    if viewModel.phase == .loading {
-                        VStack {
-                            Spacer()
-                            
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                            
-                            Spacer()
+            TabView {
+                NavigationSplitView {
+                    VStack {
+                        if viewModel.phase == .loading {
+                            VStack {
+                                Spacer()
+                                
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                                
+                                Spacer()
+                            }
+                        } else {
+                            List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
+                                Text(item.name.orEmpty())
+                                    .tag(viewModel.getIdOnly(for: item))
+                            }
+                            .listStyle(.inset(alternatesRowBackgrounds: true))
                         }
-                    } else {
-                        List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
-                            Text(item.name.orEmpty())
-                                .tag(viewModel.getIdOnly(for: item))
-                        }
-                        .listStyle(.inset(alternatesRowBackgrounds: true))
-                    }
-                    
-                    HStack {
-                        Button {
-                            viewModel.decreaseOffset()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                        }
-                        .disabled(!viewModel.isPrevAvailable)
-
-                        Text("\(viewModel.currentOffset)")
                         
-                        Button {
-                            viewModel.increaseOffset()
-                        } label: {
-                            Image(systemName: "chevron.right")
+                        HStack {
+                            Button {
+                                viewModel.decreaseOffset()
+                            } label: {
+                                Image(systemName: "chevron.left")
+                            }
+                            .disabled(!viewModel.isPrevAvailable)
+
+                            Text("\(viewModel.currentOffset)")
+                            
+                            Button {
+                                viewModel.increaseOffset()
+                            } label: {
+                                Image(systemName: "chevron.right")
+                            }
+                            .disabled(!viewModel.isNextAvailable)
                         }
-                        .disabled(!viewModel.isNextAvailable)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
+                        .edgesIgnoringSafeArea(.all)
                     }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .edgesIgnoringSafeArea(.all)
-                }
-                .navigationTitle(LocalizableText.listPokemonTitle)
-                .onAppear {
-                    Task {
-                        await viewModel.getPokemonList()
+                    .navigationTitle(LocalizableText.listPokemonTitle)
+                    .onAppear {
+                        Task {
+                            await viewModel.getPokemonList()
+                        }
+                    }
+                } detail: {
+                    if viewModel.firstItem() == nil {
+                        EmptyView()
+                    } else {
+                        PokemonDetailView(
+                            id: $viewModel.selected,
+                            isFromMine: false
+                        )
                     }
                 }
-            } detail: {
-                if viewModel.firstItem() == nil {
-                    EmptyView()
-                } else {
-                    PokemonDetailView(
-                        id: $viewModel.selected
-                    )
+                .tabItem {
+                    Text("Wild Pokemon")
                 }
+                
+                MyPokemonView()
+                    .tabItem {
+                        Text(LocalizableText.myPokemonTitle)
+                    }
             }
             
             #elseif os(iOS)
-            NavigationSplitView {
-                VStack {
-                    if viewModel.phase == .loading {
-                        VStack {
-                            Spacer()
-                            
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                            
-                            Spacer()
+            TabView {
+                NavigationSplitView {
+                    VStack {
+                        if viewModel.phase == .loading {
+                            VStack {
+                                Spacer()
+                                
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                                
+                                Spacer()
+                            }
+                        } else {
+                            List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
+                                
+                                Text(item.name.orEmpty())
+                                    .tag(viewModel.getIdOnly(for: item))
+                            }
+                            .listStyle(.inset)
                         }
-                    } else {
-                        List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
-                            
-                            Text(item.name.orEmpty())
-                                .tag(viewModel.getIdOnly(for: item))
-                        }
-                        .listStyle(.inset)
-                    }
-                    
-                    HStack {
-                        Button {
-                            viewModel.decreaseOffset()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                        }
-                        .disabled(!viewModel.isPrevAvailable)
-
-                        Text("\(viewModel.currentOffset)")
                         
-                        Button {
-                            viewModel.increaseOffset()
-                        } label: {
-                            Image(systemName: "chevron.right")
+                        HStack {
+                            Button {
+                                viewModel.decreaseOffset()
+                            } label: {
+                                Image(systemName: "chevron.left")
+                            }
+                            .disabled(!viewModel.isPrevAvailable)
+
+                            Text("\(viewModel.currentOffset)")
+                            
+                            Button {
+                                viewModel.increaseOffset()
+                            } label: {
+                                Image(systemName: "chevron.right")
+                            }
+                            .disabled(!viewModel.isNextAvailable)
                         }
-                        .disabled(!viewModel.isNextAvailable)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
+                        .edgesIgnoringSafeArea(.all)
                     }
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .edgesIgnoringSafeArea(.all)
-                }
-                .onAppear {
-                    Task {
-                        await viewModel.getPokemonList()
+                    .onAppear {
+                        Task {
+                            await viewModel.getPokemonList()
+                        }
+                    }
+                    .navigationTitle(LocalizableText.listPokemonTitle)
+                    .toolbar {
+                        NavigationLink {
+                            MyPokemonView()
+                        } label: {
+                            Text(LocalizableText.myPokemonTitle)
+                        }
+                    }
+                } detail: {
+                    if viewModel.firstItem() == nil {
+                        EmptyView()
+                    } else {
+                        PokemonDetailView(
+                            id: $viewModel.selected,
+                            isFromMine: false
+                        )
                     }
                 }
-                .navigationTitle(LocalizableText.listPokemonTitle)
-            } detail: {
-                if viewModel.firstItem() == nil {
-                    EmptyView()
-                } else {
-                    PokemonDetailView(
-                        id: $viewModel.selected
-                    )
+                .tabItem {
+                    Text("Wild Pokemon")
                 }
+                
+                MyPokemonView()
+                    .tabItem {
+                        Text(LocalizableText.myPokemonTitle)
+                    }
             }
+            
             #endif
         }
     }
@@ -177,7 +206,7 @@ extension PokemonListsView {
                         List(viewModel.phase.resultValue ?? [], id: \.name, selection: $viewModel.selected) { item in
                             
                             NavigationLink {
-                                PokemonDetailView(id: $viewModel.selected)
+                                PokemonDetailView(id: $viewModel.selected, isFromMine: false)
                             } label: {
                                 Text(item.name.orEmpty())
                                     
@@ -209,6 +238,13 @@ extension PokemonListsView {
                     .edgesIgnoringSafeArea(.all)
                 }
                 .navigationTitle(LocalizableText.listPokemonTitle)
+                .toolbar {
+                    NavigationLink {
+                        MyPokemonView()
+                    } label: {
+                        Text(LocalizableText.myPokemonTitle)
+                    }
+                }
             }
             .onAppear {
                 Task {
