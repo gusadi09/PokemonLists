@@ -7,7 +7,7 @@ final class LocalDatabaseTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        let persistence = PokemonCoreDataManager()
+        let persistence = PokemonCoreDataManager.shared
         
         try persistence.savePokemon(id: 1, name: "fish", root: "fish")
         
@@ -15,7 +15,7 @@ final class LocalDatabaseTests: XCTestCase {
     }
     
     func test_addTwoEntity_deleteSpesificEntity() throws {
-        let persistence = PokemonCoreDataManager()
+        let persistence = PokemonCoreDataManager.shared
         
         try persistence.deleteAllPokemon()
         
@@ -34,13 +34,13 @@ final class LocalDatabaseTests: XCTestCase {
     }
 
     func test_fibonacciNumber() throws {
-        let persistence = PokemonCoreDataManager()
+        let persistence = PokemonCoreDataManager.shared
         
         XCTAssertEqual(persistence.fibonacciSeries(num: 2), 1)
     }
     
     func test_editEntity() throws {
-        let persistence = PokemonCoreDataManager()
+        let persistence = PokemonCoreDataManager.shared
         
         try persistence.savePokemon(id: 1, name: "fish", root: "fish")
         
@@ -54,7 +54,7 @@ final class LocalDatabaseTests: XCTestCase {
     }
     
     func test_deleteAllEntity() throws {
-        let persistence = PokemonCoreDataManager()
+        let persistence = PokemonCoreDataManager.shared
         
         try persistence.deleteAllPokemon()
         

@@ -12,7 +12,7 @@ public final class PokemonDefaultLocalDataSource: PokemonLocalDataSource {
     
     private let coreData: PokemonCoreDataManager
     
-    public init(coreData: PokemonCoreDataManager = PokemonCoreDataManager()) {
+    public init(coreData: PokemonCoreDataManager = PokemonCoreDataManager.shared) {
         self.coreData = coreData
     }
     
@@ -34,5 +34,13 @@ public final class PokemonDefaultLocalDataSource: PokemonLocalDataSource {
     
     public func deleteAllPokemon() throws {
         try coreData.deleteAllPokemon()
+    }
+    
+    public func getSpesificPokemon(uid: UUID) throws -> Pokemon? {
+        let data = try coreData.loadPokemon()
+        
+        return data.first { item in
+            item.uid == uid
+        }
     }
 }

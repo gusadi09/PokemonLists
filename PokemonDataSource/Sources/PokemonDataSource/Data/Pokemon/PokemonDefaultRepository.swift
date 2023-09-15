@@ -47,4 +47,8 @@ public final class PokemonDefaultRepository: PokemonRepository {
     public func provideDeleteAllPokemon() throws {
         try self.local.deleteAllPokemon()
     }
+    
+    public func provideGetSpesificPokemon(uid: UUID) throws -> Pokemon? {
+        try self.local.getSpesificPokemon(uid: uid)
+    }
 }

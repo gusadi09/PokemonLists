@@ -15,4 +15,5 @@ public protocol PokemonRepository {
     func provideLoadMyPokemon() throws -> [Pokemon]
     func provideDeleteSpesificPokemon(at name: String) throws
     func provideDeleteAllPokemon() throws
+    func provideGetSpesificPokemon(uid: UUID) throws -> Pokemon?
 }

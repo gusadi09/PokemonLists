@@ -8,8 +8,168 @@
 import SwiftUI
 
 struct MyPokemonView: View {
+    
+    @StateObject var viewModel = MyPokemonViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+#if os(macOS)
+        
+        SplitView()
+            .environmentObject(viewModel)
+        
+#elseif os(iOS)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            SplitView()
+                .environmentObject(viewModel)
+        } else {
+            StackView()
+                .environmentObject(viewModel)
+        }
+#endif
+    }
+}
+
+extension MyPokemonView {
+    struct SplitView: View {
+        
+        @EnvironmentObject var viewModel: MyPokemonViewModel
+        
+        @Environment(\.colorScheme) var scheme
+        
+        var body: some View {
+#if os(macOS)
+            
+            NavigationSplitView {
+                List(viewModel.savedList, id: \.uid, selection: $viewModel.uid) { item in
+                    (
+                        Text("\(item.name.orEmpty()) ")
+                        +
+                        Text("(\(item.rootParent.orEmpty()))")
+                            .foregroundColor(.gray)
+                    )
+                    .tag(item.uid)
+                    .onTapGesture {
+                        self.viewModel.nickname = item.name.orEmpty()
+                        self.viewModel.id = UInt(item.id)
+                    }
+                }
+                .listStyle(.inset(alternatesRowBackgrounds: true))
+                .navigationTitle(LocalizableText.myPokemonTitle)
+                .onAppear {
+                    viewModel.getAllPokemon()
+                }
+            } detail: {
+                if viewModel.firstItem() == nil {
+                    EmptyView()
+                } else {
+                    PokemonDetailView(
+                        id: $viewModel.id,
+                        uid: self.viewModel.uid ?? UUID(),
+                        isFromMine: true
+                    )
+                }
+            }
+            
+#elseif os(iOS)
+            NavigationSplitView {
+                VStack {
+                    List(viewModel.savedList, id: \.name, selection: $viewModel.uid) { item in
+                        
+                        (
+                            Text("\(item.name.orEmpty()) ")
+                            +
+                            Text("(\(item.rootParent.orEmpty()))")
+                                .foregroundColor(.gray)
+                        )
+                        .tag(item.uid)
+                        .onTapGesture {
+                            self.viewModel.nickname = item.name.orEmpty()
+                            self.viewModel.id = UInt(item.id)
+                        }
+                    }
+                    .listStyle(.inset)
+                    
+                }
+                .onAppear {
+                    viewModel.getAllPokemon()
+                }
+                .navigationTitle(LocalizableText.myPokemonTitle)
+            } detail: {
+                if viewModel.firstItem() == nil {
+                    EmptyView()
+                } else {
+                    PokemonDetailView(
+                        id: $viewModel.id,
+                        uid: self.viewModel.uid ?? UUID(),
+                        isFromMine: true
+                    )
+                }
+            }
+#endif
+        }
+    }
+    
+    struct StackView: View {
+        
+        @EnvironmentObject var viewModel: MyPokemonViewModel
+        
+        var body: some View {
+            VStack {
+                List(viewModel.savedList, id: \.name, selection: $viewModel.id) { item in
+                    
+                    NavigationLink {
+                        PokemonDetailView(id: $viewModel.id, uid: item.uid ?? UUID(), isFromMine: true)
+                    } label: {
+                        Text("\(item.name.orEmpty()) ")
+                        +
+                        Text("(\(item.rootParent.orEmpty()))")
+                            .foregroundColor(.gray)
+                    }
+                    .tag(UInt(item.id))
+                    .contextMenu {
+                        Button {
+                            viewModel.releasePokemon(name: item.name.orEmpty()) {
+                                viewModel.getAllPokemon()
+                            }
+                        } label: {
+                            Text(LocalizableText.detailRelease)
+                        }
+
+                    }
+                    
+                }
+                .refreshable {
+                    viewModel.getAllPokemon()
+                }
+                .onAppear {
+                    viewModel.getAllPokemon()
+                }
+                .alert(isPresented: $viewModel.isShowAlert, content: {
+                    switch viewModel.releaseStat {
+                    case .success:
+                        return Alert(
+                            title: Text(LocalizableText.detailSuccessSave),
+                            message: Text(LocalizableText.myPokemonSuccessRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    case .fail:
+                        return Alert(
+                            title: Text(LocalizableText.myPokemonFailTitle),
+                            message: Text(LocalizableText.myPokemonFailRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                        
+                    default:
+                        return Alert(
+                            title: Text(LocalizableText.myPokemonFailTitle),
+                            message: Text(LocalizableText.myPokemonFailRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
+                })
+            }
+            .navigationTitle(LocalizableText.myPokemonTitle)
+        }
     }
 }
 

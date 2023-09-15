@@ -13,4 +13,5 @@ public protocol PokemonLocalDataSource {
     func loadAllPokemon() throws -> [Pokemon]
     func deleteSpesificPokemon(name: String) throws
     func deleteAllPokemon() throws
+    func getSpesificPokemon(uid: UUID) throws -> Pokemon?
 }

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PokemonDetailView: View {
     
+    let isFromMine: Bool
+    let uid: UUID
     @Binding var id: UInt?
     
     @StateObject var viewModel = PokemonDetailViewModel()
@@ -17,8 +19,10 @@ struct PokemonDetailView: View {
     @Environment(\.colorScheme) var scheme
     @Environment(\.dismiss) var dismiss
     
-    init(id: Binding<UInt?>) {
+    init(id: Binding<UInt?>, uid: UUID = UUID(), isFromMine: Bool) {
         self._id = id
+        self.uid = uid
+        self.isFromMine = isFromMine
     }
     
     var body: some View {
@@ -33,10 +37,21 @@ struct PokemonDetailView: View {
             } else {
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(alignment: .leading, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 12) {
                             
                             HStack {
                                 Spacer()
+                                    .alert(isPresented: $viewModel.isSuccessToSave, content: {
+                                        Alert(
+                                            title: Text(LocalizableText.detailSuccessSave),
+                                            message: Text(LocalizableText.detailSuccessSubtitle),
+                                            dismissButton: .default(Text("OK"), action: {
+                                                #if os(iOS)
+                                                dismiss()
+                                                #endif
+                                            })
+                                        )
+                                    })
                                 
                                 AsyncImage(
                                     url: viewModel.picture()
@@ -53,21 +68,72 @@ struct PokemonDetailView: View {
                                     ProgressView()
                                         .progressViewStyle(.circular)
                                 }
+                                .alert(isPresented: $viewModel.isRanAway) {
+                                    Alert(
+                                        title: Text(LocalizableText.detailRanAway),
+                                        message: Text(LocalizableText.detailPokemonFailCaught),
+                                        dismissButton: .default(Text("OK"))
+                                    )
+                                }
                                 
                                 Spacer()
+                                    
                             }
                             .padding(.top)
 
                             HStack {
                                 Spacer()
+                                    .alert(LocalizableText.detailCaught, isPresented: $viewModel.showSavePrompt
+                                    ) {
+                                        TextField(LocalizableText.detailCaughtPlaceholder, text: $viewModel.nickname)
+                                        Button("OK", action: {
+                                            viewModel.catchPokemon(
+                                                id: id.orZero(),
+                                                name: viewModel.nickname.isEmpty ? (viewModel.phase.resultValue?.name).orEmpty() : viewModel.nickname,
+                                                root: (viewModel.phase.resultValue?.name).orEmpty()
+                                            )
+
+                                        })
+                                    } message: {
+                                        Text(LocalizableText.detailCaughtSubtitle)
+                                    }
                                 
-                                Text((viewModel.phase.resultValue?.name).orEmpty())
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .padding(.horizontal)
-                                    .id(1)
+                                if isFromMine {
+                                    (
+                                        Text(viewModel.localName)
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                    +
+                                    Text(" (\((viewModel.phase.resultValue?.name).orEmpty()))")
+                                        .font(.title2)
+                                        .foregroundColor(.gray)
+                                    )
+                                        .padding(.horizontal)
+                                        .id(1)
+                                        
+                                } else {
+                                    Text((viewModel.phase.resultValue?.name).orEmpty())
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                        .padding(.horizontal)
+                                        .id(1)
+                                }
                                 
                                 Spacer()
+                                    .alert(LocalizableText.detailRename, isPresented: $viewModel.isShowRename
+                                    ) {
+                                        TextField(LocalizableText.detailCaughtPlaceholder, text: $viewModel.rename)
+                                        
+                                        Button("Cancel", action: {})
+                                        
+                                        Button("OK", action: {
+                                            viewModel.renamePokemon(currentName: viewModel.localName, to: viewModel.rename)
+                                            viewModel.getSpesific(uid: uid)
+                                        })
+                                        
+                                    } message: {
+                                        Text(LocalizableText.detailRenameSubtitle)
+                                    }
                             }
                             
                             Capsule()
@@ -183,27 +249,58 @@ struct PokemonDetailView: View {
                 }
             }
             
-            Button {
-                viewModel.tryToCatch()
-            } label: {
-                HStack {
-                    Spacer()
-                    
-                    Text(LocalizableText.detailCatch)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                    
-                    Spacer()
+            HStack {
+                if !isFromMine {
+                    Button {
+                        viewModel.tryToCatch()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            
+                            Text(isFromMine ? LocalizableText.detailRelease : LocalizableText.detailCatch)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            
+                            Spacer()
+                        }
+                        .disabled(viewModel.phase == .loading)
+                        .padding(.horizontal)
+                        .frame(height: 45)
+                        .background(
+                            Capsule()
+                                .foregroundColor(.blue.opacity(viewModel.phase == .loading ? 0.7 : 1))
+                        )
+                        .padding(.vertical, 10)
+                        .padding(.horizontal)
+                        
+                    }
                 }
-                .disabled(viewModel.phase == .loading)
-                .padding(.horizontal)
-                .frame(height: 45)
-                .background(
-                    Capsule()
-                        .foregroundColor(.blue.opacity(viewModel.phase == .loading ? 0.7 : 1))
-                )
-                .padding(.vertical, 10)
-                .padding(.horizontal)
+                
+                if isFromMine {
+                    Button {
+                        viewModel.isShowRename.toggle()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            
+                            Text(LocalizableText.detailRename)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            
+                            Spacer()
+                        }
+                        .disabled(viewModel.phase == .loading)
+                        .padding(.horizontal)
+                        .frame(height: 45)
+                        .background(
+                            Capsule()
+                                .foregroundColor(.blue.opacity(viewModel.phase == .loading ? 0.7 : 1))
+                        )
+                        .padding(.vertical, 10)
+                        .padding(.horizontal)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
             .background(
                 Rectangle()
@@ -216,38 +313,18 @@ struct PokemonDetailView: View {
                         y: 0
                     )
             )
-            .alert(isPresented: $viewModel.isSuccessToSave, content: {
-                Alert(
-                    title: Text(LocalizableText.detailSuccessSave),
-                    message: Text(LocalizableText.detailSuccessSubtitle),
-                    dismissButton: .default(Text("OK"), action: { dismiss() })
-                )
-            })
-            .alert(isPresented: $viewModel.isRanAway) {
-                Alert(
-                    title: Text(LocalizableText.detailRanAway),
-                    message: Text(LocalizableText.detailPokemonFailCaught),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-            .alert(LocalizableText.detailCaught, isPresented: $viewModel.showSavePrompt
-            ) {
-                TextField(LocalizableText.detailCaughtPlaceholder, text: $viewModel.nickname)
-                Button("OK", action: {
-                    viewModel.catchPokemon(
-                        id: id.orZero(),
-                        name: viewModel.nickname.isEmpty ? (viewModel.phase.resultValue?.name).orEmpty() : viewModel.nickname,
-                        root: (viewModel.phase.resultValue?.name).orEmpty()
-                    )
-                })
-            } message: {
-                Text(LocalizableText.detailCaughtSubtitle)
-            }
             
         }
         .onAppear(perform: {
-            Task {
-                await viewModel.getPokemonDetail(for: id.orZero())
+            if isFromMine {
+                Task {
+                    viewModel.getSpesific(uid: uid)
+                    await viewModel.getPokemonDetail(for: id.orZero())
+                }
+            } else {
+                Task {
+                    await viewModel.getPokemonDetail(for: id.orZero())
+                }
             }
         })
         .onChange(of: id, perform: { newValue in
@@ -262,6 +339,6 @@ struct PokemonDetailView: View {
 
 struct PokemonDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonDetailView(id: .constant(1))
+        PokemonDetailView(id: .constant(1), isFromMine: false)
     }
 }
