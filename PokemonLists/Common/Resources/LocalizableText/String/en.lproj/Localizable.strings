@@ -27,3 +27,6 @@
 "detail_rename_subtitle" = "If you want rename your favorite pokemon, just type it";
 
 "my_pokemon_title" = "My Pokemon";
+"my_pokemon_fail_title" = "Failed";
+"my_pokemon_fail_release" = "Pokemon failed to release to wild area";
+"my_pokemon_success_release" = "Pokemon failed to release to wild area";

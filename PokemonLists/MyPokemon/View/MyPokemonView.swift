@@ -40,22 +40,20 @@ extension MyPokemonView {
 #if os(macOS)
             
             NavigationSplitView {
-                VStack {
-                    List(viewModel.savedList, id: \.uid, selection: $viewModel.uid) { item in
-                        (
-                            Text("\(item.name.orEmpty()) ")
-                            +
-                            Text("(\(item.rootParent.orEmpty()))")
-                                .foregroundColor(.gray)
-                        )
-                        .tag(item.uid)
-                        .onTapGesture {
-                            self.viewModel.nickname = item.name.orEmpty()
-                            self.viewModel.id = UInt(item.id)
-                        }
+                List(viewModel.savedList, id: \.uid, selection: $viewModel.uid) { item in
+                    (
+                        Text("\(item.name.orEmpty()) ")
+                        +
+                        Text("(\(item.rootParent.orEmpty()))")
+                            .foregroundColor(.gray)
+                    )
+                    .tag(item.uid)
+                    .onTapGesture {
+                        self.viewModel.nickname = item.name.orEmpty()
+                        self.viewModel.id = UInt(item.id)
                     }
-                    .listStyle(.inset(alternatesRowBackgrounds: true))
                 }
+                .listStyle(.inset(alternatesRowBackgrounds: true))
                 .navigationTitle(LocalizableText.myPokemonTitle)
                 .onAppear {
                     viewModel.getAllPokemon()
@@ -128,12 +126,47 @@ extension MyPokemonView {
                             .foregroundColor(.gray)
                     }
                     .tag(UInt(item.id))
+                    .contextMenu {
+                        Button {
+                            viewModel.releasePokemon(name: item.name.orEmpty()) {
+                                viewModel.getAllPokemon()
+                            }
+                        } label: {
+                            Text(LocalizableText.detailRelease)
+                        }
+
+                    }
                     
+                }
+                .refreshable {
+                    viewModel.getAllPokemon()
                 }
                 .onAppear {
                     viewModel.getAllPokemon()
                 }
-                
+                .alert(isPresented: $viewModel.isShowAlert, content: {
+                    switch viewModel.releaseStat {
+                    case .success:
+                        return Alert(
+                            title: Text(LocalizableText.detailSuccessSave),
+                            message: Text(LocalizableText.myPokemonSuccessRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    case .fail:
+                        return Alert(
+                            title: Text(LocalizableText.myPokemonFailTitle),
+                            message: Text(LocalizableText.myPokemonFailRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                        
+                    default:
+                        return Alert(
+                            title: Text(LocalizableText.myPokemonFailTitle),
+                            message: Text(LocalizableText.myPokemonFailRelease),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
+                })
             }
             .navigationTitle(LocalizableText.myPokemonTitle)
         }

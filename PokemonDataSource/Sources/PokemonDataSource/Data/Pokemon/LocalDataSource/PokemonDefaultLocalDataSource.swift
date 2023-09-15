@@ -12,7 +12,7 @@ public final class PokemonDefaultLocalDataSource: PokemonLocalDataSource {
     
     private let coreData: PokemonCoreDataManager
     
-    public init(coreData: PokemonCoreDataManager = PokemonCoreDataManager()) {
+    public init(coreData: PokemonCoreDataManager = PokemonCoreDataManager.shared) {
         self.coreData = coreData
     }
     

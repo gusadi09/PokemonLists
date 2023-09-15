@@ -86,4 +86,16 @@ enum LocalizableText {
         "my_pokemon_title",
         comment: "my pokemon"
     )
+    static let myPokemonFailTitle = NSLocalizedString(
+        "my_pokemon_fail_title",
+        comment: "failed"
+    )
+    static let myPokemonSuccessRelease = NSLocalizedString(
+        "my_pokemon_success_release",
+        comment: "failed"
+    )
+    static let myPokemonFailRelease = NSLocalizedString(
+        "my_pokemon_fail_release",
+        comment: "failed"
+    )
 }

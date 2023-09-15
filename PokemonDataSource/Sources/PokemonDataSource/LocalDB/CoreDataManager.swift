@@ -8,8 +8,12 @@
 import CoreData
 import Foundation
 
-public class PokemonCoreDataManager: NSPersistentContainer {
+public class PokemonCoreDataManager {
  
+    public static let shared = PokemonCoreDataManager()
+    
+    let container: NSPersistentContainer
+    
     public init() {
         guard
             let objectModelURL = Bundle.module.url(forResource: "Model", withExtension: "momd"),
@@ -17,26 +21,25 @@ public class PokemonCoreDataManager: NSPersistentContainer {
         else {
             fatalError("Failed to retrieve the object model")
         }
-        super.init(name: "Model", managedObjectModel: objectModel)
-        self.initialize()
-    }
-    
-    private func initialize() {
-        self.loadPersistentStores { description, error in
+        self.container = NSPersistentContainer(name: "Model", managedObjectModel: objectModel)
+        
+        self.container.loadPersistentStores { description, error in
             if let err = error {
                 fatalError("Failed to load CoreData: \(err)")
             }
             print("Core data loaded: \(description)")
         }
+        
+        self.container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
     func loadPokemon() throws -> [Pokemon] {
-        let fetchRequest = try self.viewContext.fetch(Pokemon.fetchRequest())
-        return fetchRequest
+        let fetchRequest = NSFetchRequest<Pokemon>(entityName: "Pokemon")
+        return try self.container.viewContext.fetch(fetchRequest)
     }
     
     func savePokemon(id: UInt, name: String, root: String) throws {
-        let entity = Pokemon(context: self.viewContext)
+        let entity = Pokemon(context: self.container.viewContext)
         
         entity.uid = UUID()
         entity.id = Int64(id)
@@ -44,22 +47,25 @@ public class PokemonCoreDataManager: NSPersistentContainer {
         entity.rootParent = root
         entity.renameAttempt = 0
         
-        if self.viewContext.hasChanges {
-            try self.viewContext.save()
+        if self.container.viewContext.hasChanges {
+            self.container.viewContext.insert(entity)
+            try self.container.viewContext.save()
+            self.container.viewContext.reset()
         }
     }
     
     func editPokemon(name: String, newValue: String) throws {
-        let fetchRequest = Pokemon.fetchRequest()
+        let fetchRequest = NSFetchRequest<Pokemon>(entityName: "Pokemon")
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
         fetchRequest.fetchLimit = 1
         
-        guard let data = try self.viewContext.fetch(fetchRequest).first else { return }
+        guard let data = try self.container.viewContext.fetch(fetchRequest).first else { return }
         
         data.name = "\(newValue)-\(fibonacciSeries(num: data.renameAttempt))"
         data.renameAttempt += 1
-        if self.viewContext.hasChanges {
-            try self.viewContext.save()
+        if self.container.viewContext.hasChanges {
+            try self.container.viewContext.save()
+            self.container.viewContext.reset()
         }
     }
     
@@ -75,14 +81,17 @@ public class PokemonCoreDataManager: NSPersistentContainer {
     }
     
     func deletePokemon(name: String) throws {
-        let data = try loadPokemon()
+        let fetchRequest = NSFetchRequest<Pokemon>(entityName: "Pokemon")
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.fetchLimit = 1
         
-        for pokemon in data where pokemon.name == name {
-            self.viewContext.delete(pokemon)
-        }
+        guard let data = try self.container.viewContext.fetch(fetchRequest).first else { return }
         
-        if self.viewContext.hasChanges {
-            try self.viewContext.save()
+        self.container.viewContext.delete(data)
+        
+        if self.container.viewContext.hasChanges {
+            try self.container.viewContext.save()
+            self.container.viewContext.reset()
         }
     }
     
@@ -90,11 +99,12 @@ public class PokemonCoreDataManager: NSPersistentContainer {
         let item = try loadPokemon()
         
         for item in item {
-            self.viewContext.delete(item)
+            self.container.viewContext.delete(item)
         }
         
-        if self.viewContext.hasChanges {
-            try self.viewContext.save()
+        if self.container.viewContext.hasChanges {
+            try self.container.viewContext.save()
+            self.container.viewContext.reset()
         }
     }
 }

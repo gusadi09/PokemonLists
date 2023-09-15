@@ -75,11 +75,11 @@ final class PokemonDetailViewModel: ObservableObject {
         if randomValue == 0 {
             isRanAway = false
             showSavePrompt = true
-            print("Caught")
+            
         } else {
             isRanAway = true
             showSavePrompt = false
-            print("Fail")
+            
         }
     }
     

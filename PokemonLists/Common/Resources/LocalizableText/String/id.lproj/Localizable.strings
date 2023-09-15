@@ -27,3 +27,6 @@
 "detail_rename_subtitle" = "Jika kamu ingin merubah nama pokemon favoritmu, silahkan ketik";
 
 "my_pokemon_title" = "Pokemon Saya";
+"my_pokemon_fail_title" = "Gagal";
+"my_pokemon_fail_release" = "Pokemon gagal dilepas ke area liar";
+"my_pokemon_success_release" = "Pokemon berhasil dilepas ke area liar";
